@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private int progressStatus = 0, progressStatus2 = 0, progressStatus3 = 0, progressStatus4 = 0;
     private LottieAnimationView lottieprogress1, lottieprogress2, lottieprogress3,
             lottieprogressdone1, lottieprogressdone2, lottieprogressdone3;
+    private boolean stopProgress = false;
 
 
     @Override
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         new Thread(() -> {
-            while (true) {
+            while (!stopProgress) {
                 progressStatus += 7;
 
                 handler.post(() -> progress1.setProgress(progressStatus));
@@ -82,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
                     if (completeProgress1){
                         Log.d("TAG", "runProgressView1: Complete");
                         runOnUiThread(() -> {
+                            // TODO : Complete Done 100% Process 1 and run Process 2
+                            stopProgress = true;
+                            progressStatus = 100;
+                            progress1.setProgress(progressStatus);
+
                             lottieprogressdone1.setScaleX(1.3f);
                             lottieprogressdone1.setScaleY(1.3f);
                             lottieprogressdone1.setVisibility(View.VISIBLE);
